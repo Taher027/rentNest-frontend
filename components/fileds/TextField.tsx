@@ -26,6 +26,7 @@ const TextField = <T extends FieldValues>({
           <Input
             {...field}
             id={name}
+            value={field.value ?? ""}
             type={type}
             aria-invalid={fieldState.invalid}
             autoComplete="off"

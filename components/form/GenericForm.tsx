@@ -2,6 +2,7 @@
 "use client";
 import {
   Control,
+  DefaultValues,
   FieldValues,
   Path,
   useForm,
@@ -15,7 +16,7 @@ import { GenericFromContext } from "./FormContext";
 export const GenericForm = <TSchema extends FieldValues>({
   children,
   schema,
-  initialValues,
+  initialValues = {} as DefaultValues<TSchema>,
   onSubmit,
   mode = "onSubmit",
   ref,

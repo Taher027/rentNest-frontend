@@ -24,7 +24,7 @@ export type GenericFormRef<TFormValues extends FieldValues> = {
 export type GenericFromProps<TSchema extends FieldValues> = {
   children: ReactNode | ((methods: UseFormReturn<TSchema>) => ReactNode);
   schema: ZodType<TSchema, any, any>;
-  initialValues: DefaultValues<TSchema>;
+  initialValues?: DefaultValues<TSchema>;
   onSubmit: SubmitHandler<TSchema>;
   ref?: Ref<GenericFormRef<TSchema>>;
   mode: "onChange" | "onBlur" | "onSubmit" | "all";
