@@ -3,7 +3,6 @@ import { getMe } from "@/services/getMe";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getMe();
-  console.log(user);
   return (
     <div>
       <Navbar user={user?.data} /> {children}

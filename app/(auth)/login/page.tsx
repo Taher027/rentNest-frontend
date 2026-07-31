@@ -21,10 +21,11 @@ export function LoginPage() {
   const router = useRouter();
   const formRef = useRef<GenericFormRef<FormType>>(null);
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "";
+  const redirectTo = searchParams.get("redirectTo") || "";
 
   const onSubmit = async (data: FormType) => {
     const response = await loginAction(data);
+    console.log(response);
 
     if (!response.success) {
       toast.error(response.error);
@@ -32,12 +33,12 @@ export function LoginPage() {
     }
 
     if (
-      callbackUrl &&
-      callbackUrl.startsWith("/") &&
-      !callbackUrl.startsWith("//")
+      redirectTo &&
+      redirectTo.startsWith("/") &&
+      !redirectTo.startsWith("//")
     ) {
-      router.push(callbackUrl);
-    } else if (response.role === "TENANT") {
+      router.push(redirectTo);
+    } else if (response.role === "TENANT" || response.role === "USER") {
       router.push("/dashboard");
     } else if (response.role === "ADMIN") {
       router.push("/admin-dashboard");
