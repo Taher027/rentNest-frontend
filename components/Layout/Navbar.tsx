@@ -11,6 +11,11 @@ import {
 } from "../ui/dropdown-menu";
 import { LayoutDashboard, Settings, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { UserProfile } from "@/lib/types";
+import { buttonVariants } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { logout } from "@/services/logout";
+import { toast } from "sonner";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -21,10 +26,15 @@ const userMenuItems = [
   { label: "Profile", icon: User, action: "profile" },
   { label: "Settings", icon: Settings, action: "settings" },
 ];
-const Navbar = () => {
+const Navbar = ({ user }: { user: UserProfile }) => {
   const router = useRouter();
   const handleUserMenuAction = (action: string) => {
     router.push(action);
+  };
+  const handleLogout = async () => {
+    await logout();
+    toast.success("User logout successfull!");
+    router.push("/login");
   };
   return (
     <nav className="border-b border-border">
@@ -50,44 +60,65 @@ const Navbar = () => {
 
           {/* User Dropdown */}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className="cursor-pointer">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User />
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="cursor-pointer">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User />
+                  </div>
                 </div>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm font-medium">user name</p>
-                  <p className="text-xs text-muted-foreground">user email</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {userMenuItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <DropdownMenuItem
-                    key={item.action}
-                    onClick={() => handleUserMenuAction(item.action)}
-                  >
-                    <Icon className="w-4 h-4 mr-2" />
-                    <span>{item.label}</span>
-                  </DropdownMenuItem>
-                );
-              })}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={async () => {
-                  "logout action";
-                }}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium">{user.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {userMenuItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <DropdownMenuItem
+                      key={item.action}
+                      onClick={() => handleUserMenuAction(item.action)}
+                    >
+                      <Icon className="w-4 h-4 mr-2" />
+                      <span>{item.label}</span>
+                    </DropdownMenuItem>
+                  );
+                })}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={async () => handleLogout()}>
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex space-x-6">
+              <Link
+                href={"/login"}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "px-5 py-2 h-auto",
+                )}
               >
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                login
+              </Link>
+              <Link
+                href={"/register"}
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "px-5 py-2 h-auto",
+                )}
+              >
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>

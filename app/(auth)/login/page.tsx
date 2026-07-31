@@ -7,6 +7,9 @@ import { Loader } from "lucide-react";
 import { useRef } from "react";
 import z from "zod";
 import { loginAction } from "../_Actions/AuthActions";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -15,10 +18,32 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 export function LoginPage() {
+  const router = useRouter();
   const formRef = useRef<GenericFormRef<FormType>>(null);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "";
 
   const onSubmit = async (data: FormType) => {
-    await loginAction(data);
+    const response = await loginAction(data);
+
+    if (!response.success) {
+      toast.error(response.error);
+      return;
+    }
+
+    if (
+      callbackUrl &&
+      callbackUrl.startsWith("/") &&
+      !callbackUrl.startsWith("//")
+    ) {
+      router.push(callbackUrl);
+    } else if (response.role === "TENANT") {
+      router.push("/dashboard");
+    } else if (response.role === "ADMIN") {
+      router.push("/admin-dashboard");
+    } else if (response.role === "LANDLORD") {
+      router.push("/landlord-dashboard");
+    }
   };
 
   return (
