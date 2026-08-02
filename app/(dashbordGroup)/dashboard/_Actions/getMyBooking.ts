@@ -6,8 +6,6 @@ export type MyBooking = NonNullable<RentalDetails>;
 export const getMyBookings = async (): Promise<MyBooking[]> => {
   const rawBookings = await getRentals();
 
-  // List endpoint e property/tenant object thake na, tai protita
-  // booking-er jonne confirmed /api/rentals/:id diye full details ana hocche
   const enriched = await Promise.all(
     rawBookings.map((booking) => getRentalDetails(booking.id)),
   );
