@@ -1,3 +1,6 @@
+import { LucideProps } from "lucide-react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -6,10 +9,10 @@ export interface UserProfile {
   nidNumber: string;
   address: string;
   avatar: string;
-  createdAt: string; // ISO Date string
-  updatedAt: string; // ISO Date string
+  createdAt: string;
+  updatedAt: string;
   isVerified: boolean;
-  role: "ADMIN" | "USER";
+  role: "ADMIN" | "LANDLORD" | "TENANT";
   status: "ACTIVE" | "INACTIVE" | "PENDING";
 }
 
@@ -48,4 +51,18 @@ export type TListingProperties = {
   updatedAt: string;
   badge: string;
   rating: number;
+};
+export type ISidebarItem = {
+  label: string;
+  href: string;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+};
+
+export type NavbarProps = {
+  user: UserProfile;
+};
+export type PropertyListingProps = {
+  properties: TListingProperties[];
 };
