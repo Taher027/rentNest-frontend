@@ -10,8 +10,8 @@ const USER_SIDEBAR_ITEMS: ISidebarItem[] = [
     icon: LayoutDashboard,
   },
   {
-    label: "My Rentals",
-    href: "/dashboard/rentals",
+    label: "My Booking",
+    href: "/dashboard/my-booking",
     icon: FileText,
   },
 ];
