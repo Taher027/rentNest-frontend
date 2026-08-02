@@ -1,7 +1,14 @@
+import { getMe } from "@/services/getMe";
 import React from "react";
+import ProfileCard from "../dashboard/ProfileCard";
 
-const AdminDashbord = () => {
-  return <div>AdminDashbord</div>;
+const AdminDashboard = async () => {
+  const user = await getMe();
+  return (
+    <div>
+      <ProfileCard user={user?.data} />
+    </div>
+  );
 };
 
-export default AdminDashbord;
+export default AdminDashboard;
