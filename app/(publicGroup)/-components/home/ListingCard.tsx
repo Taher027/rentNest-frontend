@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { MapPin, Home, Star } from "lucide-react";
 import { TListingProperties } from "@/lib/types";
 
@@ -70,6 +71,21 @@ export function PropertyCard({ listing }: { listing: TListingProperties }) {
             <Home className="h-4 w-4 shrink-0" />
             <span>{listing.category.title}</span>
           </div>
+        </div>
+
+        <div className="mt-4 flex items-center gap-2">
+          <Link
+            href={`/properties/${listing.id}`}
+            className="flex-1 rounded-lg border border-slate-200 py-2 text-center text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+          >
+            View details
+          </Link>
+          <Link
+            href={`/book/${listing.id}`}
+            className="flex-1 rounded-lg bg-violet-500 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-violet-600"
+          >
+            Book now
+          </Link>
         </div>
       </div>
     </div>

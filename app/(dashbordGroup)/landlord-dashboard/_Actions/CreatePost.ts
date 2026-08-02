@@ -36,7 +36,7 @@ export const createPost = async (
       };
     }
 
-    revalidateTag("landlord-properties", {
+    revalidateTag("properties", {
       expire: 0,
     });
 

@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { LayoutDashboard, Settings, User } from "lucide-react";
+import { LayoutDashboard, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserProfile } from "@/lib/types";
 import { buttonVariants } from "../ui/button";
@@ -18,13 +18,12 @@ import { logout } from "@/services/logout";
 import { toast } from "sonner";
 const navItems = [
   { label: "Home", href: "/" },
+  { label: "Properties", href: "/properties" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 const userMenuItems = [
   { label: "Dashboard", icon: LayoutDashboard, action: "dashboard" },
-  { label: "Profile", icon: User, action: "profile" },
-  { label: "Settings", icon: Settings, action: "settings" },
 ];
 const Navbar = ({ user }: { user: UserProfile }) => {
   const router = useRouter();

@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: "www.vulasa.cm",
         port: "",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+      },
     ],
   },
 };

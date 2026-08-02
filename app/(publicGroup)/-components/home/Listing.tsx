@@ -1,4 +1,4 @@
-import { getProperties } from "@/services/getProperty";
+import { getProperties } from "@/app/(publicGroup)/_Actions/getProperty";
 import { PropertyCard } from "./ListingCard";
 import { TListingProperties } from "@/lib/types";
 
