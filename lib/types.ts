@@ -66,3 +66,16 @@ export type NavbarProps = {
 export type PropertyListingProps = {
   properties: TListingProperties[];
 };
+export type PropertyPayload = {
+  title: string;
+  description: string;
+  categoryId: string;
+  location: string;
+  city: string;
+  bedRooms: number;
+  price: number;
+  status: "AVAILABLE" | "RENTED" | "UNAVAILABLE";
+  areaSize: number;
+  badge: "FEATURED" | "TRENDING" | "POPULAR" | "VERIFIED" | "NOT_VERIFIED";
+  images: string[];
+};

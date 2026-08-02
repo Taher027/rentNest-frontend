@@ -29,7 +29,17 @@ const userMenuItems = [
 const Navbar = ({ user }: { user: UserProfile }) => {
   const router = useRouter();
   const handleUserMenuAction = (action: string) => {
-    router.push(action);
+    if (action === "dashboard") {
+      if (user.role === "TENANT") {
+        router.push("/dashboard");
+      } else if (user.role === "LANDLORD") {
+        router.push("/landlord-dashboard");
+      } else if (user.role === "ADMIN") {
+        router.push("/admin-dashboard");
+      }
+
+      return;
+    }
   };
   const handleLogout = async () => {
     await logout();
