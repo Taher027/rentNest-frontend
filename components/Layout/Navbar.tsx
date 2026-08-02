@@ -37,12 +37,12 @@ const Navbar = ({ user }: { user: UserProfile }) => {
     router.push("/login");
   };
   return (
-    <nav className="border-b border-border">
+    <nav className="border-b border-border z-50 bg-[#0d1a2b] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="shrink-0">
-            <span className="text-2xl font-bold text-primary">Rent Nest</span>
+          <Link href="/" className="shrink-0 outline-0">
+            <span className="text-2xl font-bold  text-white">Rent Nest</span>
           </Link>
 
           {/* Nav Links */}
@@ -51,7 +51,7 @@ const Navbar = ({ user }: { user: UserProfile }) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-foreground hover:text-primary transition-colors text-sm font-medium"
+                className="text-white transition-colors text-sm font-medium"
               >
                 {item.label}
               </Link>
@@ -72,8 +72,10 @@ const Navbar = ({ user }: { user: UserProfile }) => {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm font-medium text-white">
+                      {user.name}
+                    </p>
+                    <p className="text-xs  text-muted-foreground">
                       {user.email}
                     </p>
                   </div>
