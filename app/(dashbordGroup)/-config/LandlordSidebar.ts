@@ -1,5 +1,5 @@
 import { ISidebarItem } from "@/lib/types";
-import { FilePlus, FileText, LayoutDashboard } from "lucide-react";
+import { FilePlus, FileText, LayoutDashboard, SquarePlus } from "lucide-react";
 
 export const LANDLORD_SIDEBAR_ITEMS: ISidebarItem[] = [
   {
@@ -16,5 +16,10 @@ export const LANDLORD_SIDEBAR_ITEMS: ISidebarItem[] = [
     label: "Add Properties",
     href: "/landlord-dashboard/add-properties",
     icon: FilePlus,
+  },
+  {
+    label: "Rental Booking",
+    href: "/landlord-dashboard/rental-booking",
+    icon: SquarePlus,
   },
 ];

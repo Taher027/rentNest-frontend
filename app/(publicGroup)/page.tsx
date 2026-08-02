@@ -1,15 +1,13 @@
 import React from "react";
 import RentNestBanner from "./-components/home/Banner";
-import FeaturedListings from "./-components/home/Listing";
+import FeaturedListings from "./-components/home/FeaturedListings";
 
 const HomePage = () => {
   return (
     <>
       <RentNestBanner />
-      <div className="bg-[#F5F5F4]">
-        <div className="max-w-7xl mx-auto ">
-          <FeaturedListings />
-        </div>
+      <div className="max-w-7xl mx-auto">
+        <FeaturedListings />
       </div>
     </>
   );

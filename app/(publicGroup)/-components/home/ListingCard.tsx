@@ -81,7 +81,7 @@ export function PropertyCard({ listing }: { listing: TListingProperties }) {
             View details
           </Link>
           <Link
-            href={`/book/${listing.id}`}
+            href={`/properties/rental-request?propertyId=${listing.id}`}
             className="flex-1 rounded-lg bg-violet-500 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-violet-600"
           >
             Book now

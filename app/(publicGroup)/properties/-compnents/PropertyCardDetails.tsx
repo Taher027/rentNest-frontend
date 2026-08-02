@@ -41,8 +41,16 @@ export function PropertyDetailsCard({
 }: {
   listing: TListingProperties;
 }) {
+  if (!listing) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-8 text-center text-sm text-slate-500">
+        Property not found.
+      </div>
+    );
+  }
+
   const showFeatured = listing.badge === "FEATURED";
-  const [mainImage, ...restImages] = listing.images;
+  const [mainImage, ...restImages] = listing.images ?? [];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -72,19 +80,21 @@ export function PropertyDetailsCard({
 
       {/* Image gallery */}
       <div className="mt-6 grid grid-cols-4 gap-2">
-        <div className="relative col-span-4 h-80 overflow-hidden rounded-xl sm:col-span-3 sm:row-span-2">
-          <Image
-            src={mainImage}
-            alt={listing.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 60vw"
-            className="object-cover"
-          />
-        </div>
+        {mainImage && (
+          <div className="relative col-span-4 h-80 overflow-hidden rounded-xl bg-slate-100 sm:col-span-3 sm:row-span-2">
+            <Image
+              src={mainImage}
+              alt={listing.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 60vw"
+              className="object-cover"
+            />
+          </div>
+        )}
         {restImages.slice(0, 2).map((src, i) => (
           <div
             key={i}
-            className="relative col-span-2 hidden h-[9.5rem] overflow-hidden rounded-xl sm:col-span-1 sm:block"
+            className="relative col-span-2 hidden h-38 overflow-hidden rounded-xl bg-slate-100 sm:col-span-1 sm:block"
           >
             <Image
               src={src}
@@ -181,7 +191,7 @@ export function PropertyDetailsCard({
             </div>
 
             <Link
-              href={`/book/${listing.id}`}
+              href={`/properties/rental-request?propertyId=${listing.id}`}
               className="mt-4 block rounded-lg bg-violet-500 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-violet-600"
             >
               Book now
