@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { toast } from "sonner";
@@ -5,14 +6,7 @@ import AddPropertyForm, { PropertyFormValues } from "./AddPropertiesFrom";
 import { PropertyPayload } from "@/lib/types";
 import { createPost } from "../_Actions/CreatePost";
 
-// Test er jonne dummy category list — real app e getAllCategories() theke asbe
-const DUMMY_CATEGORIES = [
-  { id: "7c795bd1-cfb9-4f7c-a03e-02dce3d39b8e", title: "Apartment" },
-  { id: "8d795bd1-cfb9-4f7c-a03e-02dce3d39b8d", title: "House" },
-  { id: "9e795bd1-cfb9-4f7c-a03e-02dce3d39b8e", title: "Commercial" },
-];
-
-export default function AddPropertyPage() {
+export default function AddPropertyPage({ category }: any) {
   const handleSubmit = async (values: PropertyFormValues) => {
     const payload: PropertyPayload = {
       title: values.title,
@@ -29,7 +23,6 @@ export default function AddPropertyPage() {
     };
 
     const result = await createPost(payload);
-    console.log(result);
 
     if (!result.success) {
       toast.error(result.error);
@@ -37,8 +30,6 @@ export default function AddPropertyPage() {
     }
 
     toast.success("Property created");
-    // revalidateTag already "createPost" er ভেতরে hoye jay, ekhane আলাদা kore
-    // revalidate call korar দরকার nei
   };
 
   return (
@@ -46,7 +37,7 @@ export default function AddPropertyPage() {
       <h1 className="text-xl font-semibold mb-6">Add property</h1>
 
       <AddPropertyForm
-        categories={DUMMY_CATEGORIES}
+        categories={category}
         submitLabel="Create"
         onSubmit={handleSubmit}
       />

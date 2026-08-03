@@ -9,7 +9,6 @@ const PropertyDetails = async ({
 }) => {
   const { propertyId } = await params;
   const data = await getPropertiesDetails(propertyId);
-  console.log(data.data);
 
   return (
     <div>

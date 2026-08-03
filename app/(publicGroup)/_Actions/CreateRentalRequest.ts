@@ -21,8 +21,6 @@ export const createRentalRequest = async (
   try {
     const accessToken = (await cookies()).get("accessToken")?.value;
 
-    console.log("Payload sent to backend:", payload);
-
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/rentals`, {
       method: "POST",
       headers: {

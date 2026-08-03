@@ -25,7 +25,6 @@ export function LoginPage() {
 
   const onSubmit = async (data: FormType) => {
     const response = await loginAction(data);
-    console.log(response);
 
     if (!response.success) {
       toast.error(response.error);

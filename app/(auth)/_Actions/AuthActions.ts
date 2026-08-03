@@ -30,7 +30,6 @@ export const loginAction = async (data: TData) => {
     maxAge: 60 * 60 * 24 * 7,
     sameSite: "lax",
   });
-  console.log(result.data);
 
   const decodedToken = jwt.decode(result?.data?.accessToken) as JwtPayload;
 

@@ -92,7 +92,7 @@ export function PropertyListing({
 
               if (!result.success) {
                 toast.error(result.error);
-                console.log(result);
+
                 return;
               }
 

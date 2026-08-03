@@ -12,7 +12,6 @@ export const updatePost = async (
   id: string,
   payload: Record<string, any>,
 ): Promise<UpdatePostResult> => {
-  console.log(payload);
   try {
     const accessToken = (await cookies()).get("accessToken")?.value;
 

@@ -4,7 +4,19 @@ import { getNewAccessToken } from "./services/refreshToken";
 import { JwtPayload } from "jsonwebtoken";
 
 const AUTH_ROUTES = ["/login", "/register"];
-const PUBLIC_ROUTES = ["/", "/about", "/contact"];
+const PUBLIC_ROUTES = ["/", "/properties", "/about", "/contact"];
+
+// Sub-paths under an otherwise-public route that must still require auth
+const PRIVATE_SUB_ROUTES = [
+  "/properties/create",
+  "/properties/edit",
+  "/properties/manage",
+  "/properties/rental-request",
+];
+
+function matchesRoute(pathname: string, route: string) {
+  return pathname === route || pathname.startsWith(route + "/");
+}
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -48,7 +60,6 @@ export async function proxy(request: NextRequest) {
     if (userRole === "TENANT") redirectUrl = "/dashboard";
     else if (userRole === "ADMIN") redirectUrl = "/admin-dashboard";
     else if (userRole === "LANDLORD") redirectUrl = "/landlord-dashboard";
-    console.log(userRole, "user role");
     const res = NextResponse.redirect(new URL(redirectUrl, request.url));
     if (newAccessTokenSet) {
       res.cookies.set("accessToken", newAccessTokenSet, {
@@ -60,14 +71,22 @@ export async function proxy(request: NextRequest) {
     return res;
   }
 
-  const isPublicRoute = PUBLIC_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route + "/"),
-  );
-  const isAuthRoute = AUTH_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route + "/"),
+  const isPrivateSubRoute = PRIVATE_SUB_ROUTES.some((route) =>
+    matchesRoute(pathname, route),
   );
 
-  if (!accessToken && !isPublicRoute && !isAuthRoute) {
+  const isPublicRoute =
+    PUBLIC_ROUTES.some((route) => matchesRoute(pathname, route)) &&
+    !isPrivateSubRoute;
+
+  const isAuthRoute = AUTH_ROUTES.some((route) =>
+    matchesRoute(pathname, route),
+  );
+
+  if (
+    (!accessToken && !isPublicRoute && !isAuthRoute) ||
+    (!accessToken && isPrivateSubRoute)
+  ) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
 
