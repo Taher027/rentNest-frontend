@@ -1,4 +1,4 @@
-type TPropertyQuery = {
+type TPropertyFilters = {
   searchTerm?: string;
   city?: string;
   categoryId?: string;
@@ -8,11 +8,11 @@ type TPropertyQuery = {
   bedRooms?: string;
 };
 
-export const getProperties = async (query?: TPropertyQuery) => {
+export const getProperties = async (filters?: TPropertyFilters) => {
   const params = new URLSearchParams();
 
-  if (query) {
-    Object.entries(query).forEach(([key, value]) => {
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
       if (value) {
         params.append(key, value);
       }
