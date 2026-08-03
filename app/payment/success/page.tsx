@@ -1,40 +1,101 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, XCircle, Loader } from "lucide-react";
+import { getPaymentStatus } from "../../(dashbordGroup)/dashboard/_Actions/GetPaymentStatus";
 
-type PageProps = {
-  // Next.js 15/16: searchParams is a Promise and must be awaited
-  searchParams: Promise<{ transactionId?: string }>;
-};
+export default function PaymentSuccessPage() {
+  const searchParams = useSearchParams();
+  const rentalRequestId = searchParams.get("rentalRequestId");
 
-export default async function PaymentSuccessPage({ searchParams }: PageProps) {
-  const { transactionId } = await searchParams;
+  const [status, setStatus] = useState<
+    "checking" | "confirmed" | "unconfirmed"
+  >(() => (rentalRequestId ? "checking" : "unconfirmed"));
+
+  useEffect(() => {
+    if (!rentalRequestId) return;
+
+    let attempts = 0;
+    const maxAttempts = 6; // ~18 shekonder moddhe koyekbar try korbe
+    let cancelled = false;
+
+    const check = () => {
+      getPaymentStatus(rentalRequestId).then((result) => {
+        if (cancelled) return;
+
+        if (result === "PAID") {
+          setStatus("confirmed");
+          return;
+        }
+
+        attempts += 1;
+        if (attempts < maxAttempts) {
+          setTimeout(check, 3000);
+        } else {
+          setStatus("unconfirmed");
+        }
+      });
+    };
+
+    check();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [rentalRequestId]);
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center px-4 py-16 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
-        <CheckCircle2 className="h-9 w-9 text-emerald-600" />
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+      <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        {status === "checking" && (
+          <>
+            <Loader className="mx-auto h-10 w-10 animate-spin text-slate-400" />
+            <h1 className="mt-4 text-lg font-semibold text-slate-900">
+              Confirming your payment...
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">Please wait a moment.</p>
+          </>
+        )}
+
+        {status === "confirmed" && (
+          <>
+            <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+            <h1 className="mt-4 text-lg font-semibold text-slate-900">
+              Payment successful!
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              Your booking has been paid for.
+            </p>
+            <Link
+              href="/dashboard/my-booking"
+              className="mt-6 inline-block w-full rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-violet-700"
+            >
+              View my bookings
+            </Link>
+          </>
+        )}
+
+        {status === "unconfirmed" && (
+          <>
+            <XCircle className="mx-auto h-12 w-12 text-amber-500" />
+            <h1 className="mt-4 text-lg font-semibold text-slate-900">
+              Couldn&apos;t confirm payment
+            </h1>
+            <p className="mt-1 text-sm text-slate-500">
+              If money was deducted, please check your bookings or contact
+              support.
+            </p>
+            <Link
+              href="/dashboard/my-booking"
+              className="mt-6 inline-block w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              Go to my bookings
+            </Link>
+          </>
+        )}
       </div>
-
-      <h1 className="text-xl font-semibold text-slate-900">
-        Payment successful
-      </h1>
-      <p className="mt-2 text-sm leading-relaxed text-slate-600">
-        Your payment has been confirmed. You can view the booking in your
-        dashboard.
-      </p>
-
-      {transactionId && (
-        <p className="mt-3 rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-500">
-          Transaction: {transactionId}
-        </p>
-      )}
-
-      <Link
-        href="/dashboard/my-booking"
-        className="mt-6 inline-flex items-center justify-center rounded-md bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700"
-      >
-        Go to my bookings
-      </Link>
     </div>
   );
 }

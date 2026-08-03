@@ -5,12 +5,12 @@ import { cookies } from "next/headers";
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED";
 
 export const getPaymentStatus = async (
-  rentalId: string,
+  rentalRequestId: string,
 ): Promise<PaymentStatus | null> => {
   const accessToken = (await cookies()).get("accessToken")?.value;
 
   const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/payments/status/${rentalId}`,
+    `${process.env.BACKEND_API_URL}/api/payments/status/${rentalRequestId}`,
     {
       method: "GET",
       headers: {

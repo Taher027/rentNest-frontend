@@ -16,7 +16,7 @@ export default async function FeaturedListings() {
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {data?.data.map((listing: TListingProperties) => (
+          {data?.data.slice(0, 3).map((listing: TListingProperties) => (
             <PropertyCard key={listing.id} listing={listing} />
           ))}
         </div>

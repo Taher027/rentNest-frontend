@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Roboto_Slab, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/Layout/Footer";
 
 const publicSansHeading = Public_Sans({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Toaster />
         {children}
+        <Footer />
       </body>
     </html>
   );
