@@ -8,6 +8,7 @@ import {
   Ruler,
 } from "lucide-react";
 import { MyBooking } from "../../_Actions/getMyBooking";
+import { PaymentButton } from "./PaymentButton";
 
 const STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-amber-50 text-amber-700 border-amber-200",
@@ -37,6 +38,7 @@ export function TenantBookingCard({ booking }: { booking: MyBooking }) {
     STATUS_STYLES[booking.status] ??
     "bg-slate-100 text-slate-600 border-slate-200";
   const statusMessage = STATUS_MESSAGE[booking.status] ?? "";
+  const isApproved = booking.status === "APPROVED";
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -126,6 +128,13 @@ export function TenantBookingCard({ booking }: { booking: MyBooking }) {
             <p className="text-sm leading-relaxed text-slate-600">
               {booking.message}
             </p>
+          </div>
+        )}
+
+        {/* Pay now / Paid — sudhu APPROVED status e dekhabe */}
+        {isApproved && (
+          <div className="mt-4 flex justify-end border-t border-slate-100 pt-4">
+            <PaymentButton rentalId={booking.id} />
           </div>
         )}
       </div>

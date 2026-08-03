@@ -3,10 +3,10 @@ import React from "react";
 import ProfileCard from "./ProfileCard";
 
 const ProfilePage = async () => {
-  const result = await getMe();
+  const user = await getMe();
   return (
     <div>
-      <ProfileCard user={result?.data} />
+      <ProfileCard user={user?.data} />
     </div>
   );
 };

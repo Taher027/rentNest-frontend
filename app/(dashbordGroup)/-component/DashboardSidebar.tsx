@@ -19,11 +19,11 @@ export default function DashboardSidebar({ user }: NavbarProps) {
 
   let navItems: ISidebarItem[] = [];
 
-  if (user.role === "TENANT") {
+  if (user?.role === "TENANT") {
     navItems = sidebarMenuItems.TENANT;
-  } else if (user.role === "LANDLORD") {
+  } else if (user?.role === "LANDLORD") {
     navItems = sidebarMenuItems.LANDLORD;
-  } else if (user.role === "ADMIN") {
+  } else if (user?.role === "ADMIN") {
     navItems = sidebarMenuItems.ADMIN;
   }
 
